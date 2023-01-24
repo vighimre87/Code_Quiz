@@ -31,36 +31,24 @@ function startGame() {
     // Display the questions screen and make the questions visible
     questionsScreen.classList.remove("hide");
     startCounting();
-    showFirstQuestion();
+    showQuestion();
 }
 
-function showFirstQuestion() {
-  questionCounter++;
-  currentQuestion = pickRandomQuestion();
-  questionTitle.textContent = currentQuestion.question;
-  for (let i = 0; i<currentQuestion.answers.length; i++) {
-  const choiceButton = document.createElement("button");
-  choiceButton.textContent = currentQuestion.answers[i];
-  choices.appendChild(choiceButton);
-  choiceButton.addEventListener("click", selectAnswer);
-  // reset();
-  }
-}
 
 function showQuestion() {
-    questionCounter++;
-    if (questionCounter <= 7 || timerCount > 0) {
-        currentQuestion = pickRandomQuestion();
-        questionTitle.textContent = currentQuestion.question;
-        for (let i = 0; i<currentQuestion.answers.length; i++) {
-        const choiceButton = document.createElement("button");
-        choiceButton.textContent = currentQuestion.answers[i];
-        choices.appendChild(choiceButton);
-        choiceButton.addEventListener("click", selectAnswer);
-        }
-    } else {
-      callEndScreen();
+  questionCounter++;
+  if (questionCounter <= 7 || timerCount > 0) {
+    currentQuestion = pickRandomQuestion();
+    questionTitle.textContent = currentQuestion.question;
+    for (let i = 0; i<currentQuestion.answers.length; i++) {
+    const choiceButton = document.createElement("button");
+    choiceButton.textContent = currentQuestion.answers[i];
+    choices.appendChild(choiceButton);
+    choiceButton.addEventListener("click", selectAnswer);
     }
+  } else {
+    callEndScreen();
+  }
 }
 
 
@@ -135,10 +123,10 @@ function callEndScreen() {
 
 function saveScore() {
   userInitials = initials.textContent;
-  localStorage.setItem("userInitials", userInitials);
-  localStorage.setItem("userScore", userScore);
+  localStorage.setItem("userInitials", JSON.stringify(userInitials));
+  localStorage.setItem("userScore", JSON.stringify(userScore));
 }
 
 // Add event listeners to the buttons
 startButton.addEventListener("click", startGame);
-submitButton.addEventListener("click", saveScore);
+submitButton.addEventListener("submit", saveScore);
