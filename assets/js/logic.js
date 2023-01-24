@@ -1,6 +1,5 @@
 // Selecting HTML elements that we are interacting with
 const time = document.querySelector("#time");
-const wrapper = document.querySelector(".wrapper");
 const startScreen = document.querySelector("#start-screen");
 const startButton = document.querySelector("#start");
 const questionsScreen = document.querySelector("#questions");
@@ -11,51 +10,108 @@ const finalScore = document.querySelector("#final-score");
 const initials = document.querySelector("#initials");
 const submitButton = document.querySelector("#submit");
 const feedback = document.querySelector("#feedback");
-
-// Create the choice buttons
-const firstAnswer = document.createElement("button");
-const secondAnswer = document.createElement("button");
-const thirdAnswer = document.createElement("button");
-const fourthAnswer = document.createElement("button");
+const scores = document.querySelector("#scores");
 
 
-// Add them to the questions div
-choices.appendChild(firstAnswer);
-choices.appendChild(secondAnswer);
-choices.appendChild(thirdAnswer);
-choices.appendChild(fourthAnswer);
-
-// declare the variables that we need for the program
+// Declare the variables that we need for the program
 let questionCounter = 0;
 let userChoice = "";
-let actualScore = 0;
+let userScore = 0;
 let isEndOfGame = false;
 let timer;
 let timerCount;
+let currentQuestion;
+let userInitials = "";
 
+// We call this function once we click the Start button
 function startGame() {
+    // Hide starting screen
     startScreen.classList.add("hide");
     timerCount = 70;
+    // Display the questions screen and make the questions visible
+    questionsScreen.classList.remove("hide");
     startCounting();
-    showQuestion();
+    showFirstQuestion();
+}
+
+function showFirstQuestion() {
+  questionCounter++;
+  currentQuestion = pickRandomQuestion();
+  questionTitle.textContent = currentQuestion.question;
+  for (let i = 0; i<currentQuestion.answers.length; i++) {
+  const choiceButton = document.createElement("button");
+  choiceButton.textContent = currentQuestion.answers[i];
+  choices.appendChild(choiceButton);
+  choiceButton.addEventListener("click", selectAnswer);
+  // reset();
+  }
 }
 
 function showQuestion() {
-    questionsScreen.classList.remove("hide");
-    let currentQuestion = pickRandomQuestion();
-    questionTitle.textContent = currentQuestion.question;
-    firstAnswer.textContent = currentQuestion.answers[0];
-    secondAnswer.textContent = currentQuestion.answers[1];
-    thirdAnswer.textContent = currentQuestion.answers[2];
-    fourthAnswer.textContent = currentQuestion.answers[3];
+    questionCounter++;
+    if (questionCounter <= 7 || timerCount > 0) {
+        currentQuestion = pickRandomQuestion();
+        questionTitle.textContent = currentQuestion.question;
+        for (let i = 0; i<currentQuestion.answers.length; i++) {
+        const choiceButton = document.createElement("button");
+        choiceButton.textContent = currentQuestion.answers[i];
+        choices.appendChild(choiceButton);
+        choiceButton.addEventListener("click", selectAnswer);
+        }
+    } else {
+      callEndScreen();
+    }
 }
 
-function showNextQuestion() {
 
+function selectAnswer(event) {
+  const selectedBtn = event.target;
+  userChoice = selectedBtn.textContent;
+  console.log(userChoice);
+  if (userChoice === currentQuestion.correct) {
+    userScore++;
+    displayFeedback(true);
+    playVoices(true);
+  } else {
+    displayFeedback(false);
+    playVoices(false);
+  }
+  reset();
+}
+
+function displayFeedback(isCorrect) {
+  feedback.classList.remove("hide");
+  if (isCorrect) {
+    feedback.textContent = "Correct!";
+  } else {
+    feedback.textContent = "Wrong!";
+  }
+}
+
+function playVoices(isCorrect) {
+  if (isCorrect) {
+    let correct = new Audio("../assets/sfx/correct.wav");
+    correct.play();
+  } else {
+    let wrong = new Audio("../assets/sfx/incorrect.wav");
+    wrong.play();
+    timerCount = timerCount - 10;
+  }
 }
 
 function pickRandomQuestion() {
     return questions[Math.floor(Math.random() * questions.length)];
+}
+
+function reset() {
+  if (!feedback.classList.contains("hide")) {
+    feedback.classList.add("hide");
+  }
+  questionTitle.textContent = "";
+  while (choices.firstChild) {
+    choices.removeChild(choices.firstChild);
+  }
+  showQuestion();
 }
 
 function startCounting() {
@@ -64,9 +120,25 @@ function startCounting() {
       timerCount--;
       time.textContent = timerCount;
       // Tests if time has run out
-      if (timerCount === 0) {
+      if (timerCount === 0 || questionCounter > 7) {
         // Clears interval
         clearInterval(timer);
       }
     }, 1000);
-  }
+}
+
+function callEndScreen() {
+  time.textContent = timerCount;
+  endScreen.classList.remove("hide");
+  finalScore.textContent = userScore;
+}
+
+function saveScore() {
+  userInitials = initials.textContent;
+  localStorage.setItem("userInitials", userInitials);
+  localStorage.setItem("userScore", userScore);
+}
+
+// Add event listeners to the buttons
+startButton.addEventListener("click", startGame);
+submitButton.addEventListener("click", saveScore);

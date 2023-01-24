@@ -1,0 +1,3 @@
+function displayHighScores() {}
+
+function clearHighScores() {}

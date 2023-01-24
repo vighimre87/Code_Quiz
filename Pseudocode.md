@@ -18,4 +18,6 @@
 
 6. Create a function called showQuestions which will display the question text and the answer options, take the user input and compare it against the correct answer and if the answer is right play the right sound and if the answer is wrong play the wrong sound
 
-7. Create a function called showNextQuestion which will 
+7. Create a function called showNextQuestion which will fetch the next question
+
+8. Create a function that will pick a random element from the questions 
