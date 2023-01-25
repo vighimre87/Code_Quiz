@@ -79,10 +79,10 @@ function displayFeedback(isCorrect) {
 
 function playVoices(isCorrect) {
   if (isCorrect) {
-    let correct = new Audio("../../assets/sfx/correct.wav");
+    let correct = new Audio("./assets/sfx/correct.wav");
     correct.play();
   } else {
-    let wrong = new Audio("../../assets/sfx/incorrect.wav");
+    let wrong = new Audio("./assets/sfx/incorrect.wav");
     wrong.play();
     timerCount = timerCount - 10;
   }
