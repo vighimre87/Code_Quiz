@@ -9,7 +9,7 @@ It doesn't require any installation because it runs in the browser. If you press
 
 Here is a mockup image of the webpage:
 
-<img src="assets/images/mockup_image.png" alt="Mockup image of the quiz website" style="width:500px;"/>
+<img src="assets/images/mockup_image.png" alt="Mockup image of the quiz website" style="width:600px;"/>
 
 And here is the link for the deployed webpage: https://vighimre87.github.io/Code_Quiz/
 <br>
