@@ -40,6 +40,7 @@ function showQuestion() {
   if (questionCounter <= 7 || timerCount > 0) {
     currentQuestion = pickRandomQuestion();
     questionTitle.textContent = currentQuestion.question;
+    // Dinamically create the buttons and load the questions
     for (let i = 0; i<currentQuestion.answers.length; i++) {
     const choiceButton = document.createElement("button");
     choiceButton.textContent = currentQuestion.answers[i];
@@ -78,10 +79,10 @@ function displayFeedback(isCorrect) {
 
 function playVoices(isCorrect) {
   if (isCorrect) {
-    let correct = new Audio("../assets/sfx/correct.wav");
+    let correct = new Audio("../../assets/sfx/correct.wav");
     correct.play();
   } else {
-    let wrong = new Audio("../assets/sfx/incorrect.wav");
+    let wrong = new Audio("../../assets/sfx/incorrect.wav");
     wrong.play();
     timerCount = timerCount - 10;
   }
