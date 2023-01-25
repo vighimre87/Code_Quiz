@@ -93,9 +93,11 @@ function pickRandomQuestion() {
 }
 
 function reset() {
-  if (!feedback.classList.contains("hide")) {
-    feedback.classList.add("hide");
-  }
+  setTimeout(function() {
+    if (!feedback.classList.contains("hide")) {
+      feedback.classList.add("hide");
+    }
+  }, 1000);
   questionTitle.textContent = "";
   while (choices.firstChild) {
     choices.removeChild(choices.firstChild);

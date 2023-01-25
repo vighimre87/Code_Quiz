@@ -3,4 +3,6 @@ function displayHighScores() {
     const score = JSON.parse(localStorage.getItem("userScore"));
 }
 
-function clearHighScores() {}
+function clearHighScores() {
+    
+}
