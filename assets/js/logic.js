@@ -124,12 +124,19 @@ function callEndScreen() {
   finalScore.textContent = userScore;
 }
 
-function saveScore() {
-  userInitials = initials.textContent;
-  localStorage.setItem("userInitials", JSON.stringify(userInitials));
-  localStorage.setItem("userScore", JSON.stringify(userScore));
+function saveScore(event) {
+  if (initials.value === "") {
+    return;
+  } else {
+  userInitials = initials.value;
+  console.log(userInitials);
+  localStorage.setItem("userInitials", userInitials);
+  localStorage.setItem("userScore", userScore);
+  initials.textContent = "";
+  location.replace("highscores.html");
+  }
 }
 
 // Add event listeners to the buttons
 startButton.addEventListener("click", startGame);
-submitButton.addEventListener("submit", saveScore);
+submitButton.addEventListener("click", saveScore);
